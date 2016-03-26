@@ -97,3 +97,19 @@
 ; (trace-vars sillymul)
 ; (sillymul 4 9)
 
+; PAIP defines the 'mappend' function in section 1.7, which applies a function
+; to each element of a list and appends all the results together. In Clojure
+; this is just 'mapcat'
+(mapcat #(list % (+ % %)) '(1 10 300))
+
+; CL has 'funcall' to call a function by name, but Clojure as a Lisp-1 doesn't
+; need this.
+(+ 1 2 3 4)
+(defn addemup [& nums] (apply + nums))
+(addemup 1 2 3 4)
+; Also as the addemup function above shows, 'apply' is same as in CL, just that
+; we simpy say + instead of #'+.
+
+; CL's 'lambda' is 'fn'. It's a shame, lambda is so much cooler ;-)
+((fn [x] (+ x 2)) 4)
+
