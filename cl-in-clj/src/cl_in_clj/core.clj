@@ -139,3 +139,34 @@
 (def simplemap {:a 2, :b 5, :c 20, :k 32})
 (get simplemap :k)
 (:k simplemap)
+
+; CL has defstruct. Clojure has structs too, but records are more versatile.
+; ->TypeName is a generated constructor, and afterwards map-like keyword access
+; applies.
+(defrecord Person [name weight position])
+(def joe (->Person "Joe" 190 :manager))
+
+; Keyword access to record's fields.
+(+ 10 (:weight joe))
+
+; map->TypeName is also generated, to create instances with keyword-name
+; arguments.
+(def fred (map->Person {:name "Fred", :position :janitor}))
+
+; This can be used to emulate defaults
+(defn ->PersonWithDefaults
+  [fieldmap]
+  (map->Person (merge {:position :employee} fieldmap)))
+
+(def tim (->PersonWithDefaults {:name "Tim", :weight 152})) 
+
+; CL's dotimes is Clojure's dotimes
+(dotimes [n 4] (println n))
+
+; CL's dolist is Clojure's doseq
+(doseq [x '(a b c d)] (println x))
+
+; dolist does an outer product loop when passed multiple sequences
+(doseq [x '(a b c d)
+        y '(1 2 3 4)]
+  (println (list x y)))
