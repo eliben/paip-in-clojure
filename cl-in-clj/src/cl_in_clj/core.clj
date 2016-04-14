@@ -39,6 +39,12 @@
 (rest letters)
 (last letters)
 
+; CL also uses 'elt' for generic sequence element access. In Clojure, both
+; 'nth' and 'get' work for vectors.
+(def v ['a 'b 'c 'd 'e])
+(get v 3)
+(nth v 3)
+
 ; In CL 'last' returns the last element wrapped in a list, so we'd need
 ; (first (last lst)) to access the element itself. In Clojure 'last' just
 ; returns the last element.
@@ -113,3 +119,8 @@
 ; CL's 'lambda' is 'fn'. It's a shame, lambda is so much cooler ;-)
 ((fn [x] (+ x 2)) 4)
 
+; CL's random with an integer argument is Clojure's rand-int
+(rand-int 5)
+
+; Clojure also has rand-nth for selecting a random element from a collection
+(rand-nth [:k :t :p])
