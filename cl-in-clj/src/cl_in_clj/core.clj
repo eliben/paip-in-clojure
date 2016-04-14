@@ -124,3 +124,11 @@
 
 ; Clojure also has rand-nth for selecting a random element from a collection
 (rand-nth [:k :t :p])
+
+; CL's 'assoc' works on a-lists; in Clojure it's idiomatic to use maps instead
+; (much more efficient). Moreover, in Clojure 'assoc' adds a value to a map,
+; so it's a different function.
+; To grab keys from a Clojure map use 'get' or just the key as the function:
+(def simplemap {:a 2, :b 5, :c 20, :k 32})
+(get simplemap :k)
+(:k simplemap)
