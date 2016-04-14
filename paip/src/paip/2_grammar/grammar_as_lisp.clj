@@ -1,9 +1,9 @@
-; Chapter 2: "A simple Lisp Program" - generative grammar as Lisp functions.
-;
-; Notes:
-; - Using lists, similar to the original PAIP code.
-; - Clojure code gets compiled, so functions need to be known before they are
-;   used. We can either modify the definition order or use 'declare'.
+;;; Chapter 2: "A simple Lisp Program" - generative grammar as Lisp functions.
+;;;
+;;; Notes:
+;;; - Using lists, similar to the original PAIP code.
+;;; - Clojure code gets compiled, so functions need to be known before they are
+;;;   used. We can either modify the definition order or use 'declare'.
 
 (ns paip.2-grammar.grammar_as_lisp)
 
@@ -19,13 +19,13 @@
 (defn Adj [] (one-of '(bit little blue green adiabatic)))
 
 (defn Adj* []
-  ; One approach to selection with 50% probability
+  ;; One approach to selection with 50% probability
   (if (= (rand-int 2) 0)
     nil
     (concat (Adj) (Adj*))))
 
 (defn PP* []
-  ; Another approach to selection with 50% probability
+  ;; Another approach to selection with 50% probability
   (if (rand-nth '(true false))
     (concat (PP) (PP*))
     nil))
@@ -37,6 +37,6 @@
 (defn verb-phrase [] (concat (Verb) (noun-phrase)))
 (defn sentence [] (concat (noun-phrase) (verb-phrase)))
 
-; Generate some sentences
+;; Generate some sentences
 (dotimes [_ 10]
   (println (sentence)))
