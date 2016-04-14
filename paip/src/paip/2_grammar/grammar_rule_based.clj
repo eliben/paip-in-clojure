@@ -33,10 +33,24 @@
         (rewrites phrase) (generate (rand-nth (rewrites phrase)))
         :else (list phrase)))
 
-;;; To enable tracing, uncomment these lines
+;;; Solution to exercise 2.1
+(defn generate-2-1
+  "doc-string"
+  [phrase]
+    ;; Uses if-let since a cond solution would require mean (rewrites phrase)
+    ;; even when not necessary. In the book, setf is used on a let binding but
+    ;; this goes against the Clojure way. We could define a cond-let macro
+    ;; for Clojure too.
+    (if-let [prewrites (rewrites phrase)]
+      (generate (rand-nth prewrites))
+      (if (list? phrase)
+        (mapcat generate phrase)
+        (list phrase))))
 
+;;;---- To enable tracing, uncomment the following two lines
 ;(use 'clojure.tools.trace)
 ;(trace-vars generate rewrites)
+;;;----
 
 (dotimes [_ 10]
   (println (generate 'sentence)))
