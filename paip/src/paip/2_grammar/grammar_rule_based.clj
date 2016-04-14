@@ -22,12 +22,12 @@
 (def grammar simple-grammar)
 
 (defn rewrites
-  "Return a list of the possible rewrites for this category"
+  "Return a list of the possible rewrites for this category."
   [category]
     (get grammar category))
 
 (defn generate
-  "Generate a random sentence or phrase"
+  "Generate a random sentence or phrase."
   [phrase]
   (cond (list? phrase) (mapcat generate phrase)
         (rewrites phrase) (generate (rand-nth (rewrites phrase)))
@@ -35,7 +35,6 @@
 
 ;;; Solution to exercise 2.1
 (defn generate-2-1
-  "doc-string"
   [phrase]
     ;; Uses if-let since a cond solution would require mean (rewrites phrase)
     ;; even when not necessary. In the book, setf is used on a let binding but
@@ -52,5 +51,35 @@
 ;(trace-vars generate rewrites)
 ;;;----
 
-(dotimes [_ 10]
-  (println (generate 'sentence)))
+;(dotimes [_ 10]
+  ;(println (generate 'sentence)))
+
+(defn generate-tree
+  "Generate a random sentence or phrase, with a complete parse tree."
+  [phrase]
+  (cond (list? phrase) (map generate-tree phrase)
+        (rewrites phrase)
+          (cons phrase (generate-tree (rand-nth (rewrites phrase))))
+        :else (list phrase)))
+
+;(generate-tree 'sentence)
+
+(defn combine-all
+  "Return a list of lists formed by appeding a y to an x.
+  E.g. (combine-all '((a) (b)) '((1) (2)))
+  -> ((a 1) (b 1) (a 2) (b 2))"
+  [xlist ylist]
+    (mapcat (fn [y]
+              (map #(concat % y) xlist))
+            ylist))
+
+(defn generate-all
+  "Generate a list of all possible expansions of this phrase."
+  [phrase]
+  (cond (nil? phrase) (list nil)
+        (list? phrase) (combine-all (generate-all (first phrase))
+                                    (generate-all (seq (rest phrase))))
+        (rewrites phrase) (mapcat generate-all (rewrites phrase))
+        :else (list (list phrase))))
+
+(count (generate-all 'sentence))

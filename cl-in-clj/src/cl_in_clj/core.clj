@@ -39,6 +39,13 @@
 (rest letters)
 (last letters)
 
+; Subtle difference between CL and Clojure is how 'rest' behaves at the end of a
+; list. In CL, (rest '()) is nil. In Clojure it's the empty list:
+(rest '())
+; One workaround for this is to use 'seq', which returns nil for an empty
+; collection. If it's important for (rest '())) to return nil, do:
+(seq (rest '()))
+
 ; CL also uses 'elt' for generic sequence element access. In Clojure, both
 ; 'nth' and 'get' work for vectors.
 (def v ['a 'b 'c 'd 'e])
