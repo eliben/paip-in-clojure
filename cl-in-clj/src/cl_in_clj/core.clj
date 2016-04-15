@@ -66,6 +66,12 @@
 (defn twice [x] (* x 2))
 (twice 12)
 
+; Multiple return values: in Clojure, just return a vector. Then, destructuring
+; can be used to give each value a name. This replaces CL's multiple-value-bind.
+(defn xanddouble [x] [x (* 2 x)])
+(let [[x doublex] (xanddouble 4)]
+  (+ x doublex))
+
 ; 'map' variants
 ; CL's 'mapcar' is just 'map' in Clojure.
 ;
@@ -109,6 +115,10 @@
 ; (use 'clojure.tools.trace)
 ; (trace-vars sillymul)
 ; (sillymul 4 9)
+
+; Similarly to CL, Clojure has 'time' to time the execution of expressions.
+(time (* 2 2))
+(time (Thread/sleep 100))
 
 ; PAIP defines the 'mappend' function in section 1.7, which applies a function
 ; to each element of a list and appends all the results together. In Clojure
