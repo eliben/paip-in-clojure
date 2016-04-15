@@ -66,11 +66,53 @@
 (defn twice [x] (* x 2))
 (twice 12)
 
+; In Clojure it's possible to define variadic functions, functions with multiple
+; arities and functions with keyword arguments. Here are some examples.
+
+; Variadic function with a parameter name following a '&' capturing all
+; "unnamed" parameters into a list.
+(defn foo [& args] (map list args))
+(foo 1 2 3 4 5)
+
+; Multi-arity function that can be used to implement "optional" positional
+; arguments, or just provide slightly different variants of the function for
+; different arities.
+(defn multiarity
+  ([x] (multiarity x 1 2))
+  ([x y] (multiarity x y 2))
+  ;; Actual implementation: the lower-arity variants provide default values.
+  ([x y z] (list x y z)))
+
+(multiarity 10)
+(multiarity 10 20)
+(multiarity 10 20 30)
+
+; Keyword arguments with a map following a '&' and :keys
+(defn kwargs [& {:keys [name age weight]}]
+  (list name age weight))
+
+(kwargs :name "Tom" :age 20 :weight 145)
+
+; Default values for some keys with :or (otherwise the default is nil)
+(defn kwargsdefault [& {:keys [name age weight]
+                        :or {age 18, weight 150}}]
+  (list name age weight))
+
+(kwargsdefault :name "Tim")
+
 ; Multiple return values: in Clojure, just return a vector. Then, destructuring
 ; can be used to give each value a name. This replaces CL's multiple-value-bind.
 (defn xanddouble [x] [x (* 2 x)])
 (let [[x doublex] (xanddouble 4)]
-  (+ x doublex))
+  (list x doublex))
+
+; We can do more complex destructuring too, with '&' capturing a list of
+; remaining values, and :as to capture the complete list.
+(let [[x & others] [1 2 3 4 5]]
+  (list x others))
+
+(let [[x & others :as all] [1 2 3 4 5]]
+  (list x others all))
 
 ; 'map' variants
 ; CL's 'mapcar' is just 'map' in Clojure.
