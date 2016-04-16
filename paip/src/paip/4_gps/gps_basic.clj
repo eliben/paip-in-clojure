@@ -90,3 +90,5 @@
 (GPS
   (atom #{'son-at-home 'car-works})
   '(son-at-school) school-ops)
+
+;(clojure.pprint/pprint school-ops)
