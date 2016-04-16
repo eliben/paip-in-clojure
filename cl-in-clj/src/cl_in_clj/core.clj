@@ -222,3 +222,29 @@
 (doseq [x '(a b c d)
         y '(1 2 3 4)]
   (println (list x y)))
+
+; CL has a zoo of functions for finding elements in collections: find, find-if
+; find-if-not, remove, remove-if, etc.
+; In Clojure it can all be done with filter/remove and/or 'complement'. Here
+; are some recipes:
+
+; Keep only the odd numbers in the sequence.
+(filter odd? '(1 2 3 4 5))
+
+; Keep only the non-odd numbers in the sequence (remove all odd ones).
+(remove odd? '(1 2 3 4 5))
+; Same effect (in fact this is exactly how 'remove' is implemented).
+(filter (complement odd?) '(1 2 3 4 5))
+
+; Find the first odd number in the sequence. This is efficient because 'filter'
+; returns a lazy sequence.
+(first (filter odd? '(2 3 4 5)))
+
+; Find the first non-odd number in the sequence.
+(first (remove odd? '(2 3 4 5)))
+
+; CL has a bunch of keyword variants for 'find' and 'remove', for setting the
+; test function, etc. In Clojure this isn't necessary given the concise syntax
+; for anonymous functions. For example, here's another way to keep only odd
+; numbers in a sequence - but here the function is truly arbitrary.
+(filter #(odd? %) '(1 2 3 4 5))
