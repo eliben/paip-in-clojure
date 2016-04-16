@@ -1,4 +1,5 @@
-;;; Chapter 2: "A simple Lisp Program" - generative grammar - rule-based solution.
+;;; Chapter 2: "A simple Lisp Program" - generative grammar - rule-based
+;;; solution.
 ;;;
 ;;; Notes:
 ;;; - Using maps instead of a-lists for more idiomatic (and efficient) Clojure.
