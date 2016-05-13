@@ -87,6 +87,16 @@
 (multiarity 10 20)
 (multiarity 10 20 30)
 
+; We can also use multi-arity definitions to create recursive definitions on
+; the argument list.
+(defn multiarity-rec
+  ([x] x)
+  ([x & args] (+ x (apply multiarity-rec args))))
+
+(multiarity-rec 10)
+(multiarity-rec 10 20)
+(multiarity-rec 10 20 30)
+
 ; Keyword arguments with a map following a '&' and :keys
 (defn kwargs [& {:keys [name age weight]}]
   (list name age weight))
