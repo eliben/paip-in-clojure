@@ -1,6 +1,10 @@
 (ns cl-in-clj.core
   (:gen-class))
 
+; true/false literals are just 'true' and 'false'
+(pr true)
+(pr false)
+
 ; CL's 'append' is Clojure's 'concat'
 ; Also note that Clojure is case sensitive by default; CL is case insensitive.
 ; CL> (append '(Pat Kim) '(Robin Sandy))
@@ -134,6 +138,8 @@
 ; need to use special syntax to tell CL we want the actual function when a
 ; symbol appears in a non-head position in a form. Clojure is Lisp-1, so 'list'
 ; is a function wherever it's used.
+;
+; For a version that flattens lists in the sequence, see mapcat below.
 (map list '(a b c) '(1 2 3))
 
 ; CL's 'defparameter' is just translated to 'def' in Clojure, where variables
