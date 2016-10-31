@@ -232,6 +232,12 @@
 
 (def tim (->PersonWithDefaults {:name "Tim", :weight 152})) 
 
+; CL's progn is do 
+(do
+  (prn ":" 1)
+  (prn ":" 2)
+  4)
+
 ; CL's dotimes is Clojure's dotimes
 (dotimes [n 4] (println n))
 
