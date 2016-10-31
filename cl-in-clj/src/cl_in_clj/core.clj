@@ -78,6 +78,10 @@
 (defn foo [& args] (map list args))
 (foo 1 2 3 4 5)
 
+; Some arguments may be left as required.
+(defn bar [a b & args] (list a b args))
+(bar 10 20 30 40)
+
 ; Multi-arity function that can be used to implement "optional" positional
 ; arguments, or just provide slightly different variants of the function for
 ; different arities.
