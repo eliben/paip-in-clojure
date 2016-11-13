@@ -132,6 +132,12 @@
 (let [[x & others :as all] [1 2 3 4 5]]
   (list x others all))
 
+; Clojure allows using earlier bound vars later in the same vector, like let*
+; in CL.
+(let [x 2
+      y (* 2 x)]
+  (+ x y))
+
 ; 'map' variants
 ; CL's 'mapcar' is just 'map' in Clojure.
 ;
@@ -243,6 +249,10 @@
 
 ; CL's dolist is Clojure's doseq
 (doseq [x '(a b c d)] (println x))
+
+; doseq can be combined with destructuring
+(doseq [[x & others] '((a b c) (1 2 3))]
+  (println x others))
 
 ; dolist does an outer product loop when passed multiple sequences
 (doseq [x '(a b c d)
