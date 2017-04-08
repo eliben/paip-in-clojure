@@ -2,6 +2,8 @@
 
 (ns paip.6-tools.pat-match)
 
+;;; TODO: Implement segment matching too
+
 (def fail
   "Denotes a failure in matching"
   nil)
@@ -18,12 +20,12 @@
   "Find a variable->value binding in the given binding."
   [v bindings]
   (get bindings v))
-  
+
 (defn extend-bindings
   "Add a v -> value mappping to bindings."
   [v value bindings]
   (assoc bindings v value))
-  
+
 (defn match-variable
   "Does v match input? Uses (or updates) and returns bindings."
   [v input bindings]
@@ -31,6 +33,19 @@
     (cond (nil? b) (extend-bindings v input bindings)
           (= input b) bindings
           :else fail)))
+
+(defn match-is
+  "Suceed and bind var if the input satisfied pred.
+  var-and-pred is the list (var pred)."
+  [var-and-pred input bindings]
+  (let [[v pred] var-and-pred
+        new-bindings (pat-match v input bindings)]
+    (if (or (= new-bindings fail)
+            (not (pred input)))
+      fail
+      new-bindings)))
+
+(declare match-or match-and match-not)
 
 ;;; TODO: define match-* functions from the table here (page 184)
 
@@ -44,7 +59,7 @@
 (defn single-pattern?
   "Is this a single-matching pattern?"
   [pattern]
-  (and (seq pattern) (get single-matcher-table (first pattern))))
+  (and (list? pattern) (get single-matcher-table (first pattern))))
 
 (defn single-matcher
   "Call the right single-pattern matching function."
@@ -58,4 +73,13 @@
          (variable? pattern) (match-variable pattern input bindings)
          (= pattern input) bindings
          (single-pattern? pattern) (single-matcher pattern input bindings)
+         (and (list? pattern) (list? input)) (pat-match
+                                              (rest pattern)
+                                              (rest input)
+                                              (pat-match
+                                               (first pattern)
+                                               (first input)
+                                               bindings))
          :else fail)))
+
+(pat-match '(a ?v b) '(a c d))
