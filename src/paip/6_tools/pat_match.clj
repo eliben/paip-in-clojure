@@ -41,7 +41,7 @@
   (let [[v pred] var-and-pred
         new-bindings (pat-match v input bindings)]
     (if (or (= new-bindings fail)
-            (not (pred input)))
+            (not ((resolve pred) input)))
       fail
       new-bindings)))
 
@@ -82,4 +82,5 @@
                                                bindings))
          :else fail)))
 
-(pat-match '(a ?v b) '(a c d))
+;(pat-match '(a ?v b) '(a c d))
+(pat-match '(a = (?is ?v number?)) '(a = 8))
