@@ -22,4 +22,20 @@
   (is nil? (pat-match '(a = (?is ?v number?)) '(a = jk)))
   )
 
+(deftest pat-match-and-test
+  (is nil? (pat-match '(a (?and (?is ?v number?) (?is ?v odd?))) '(a 8)))
+  (is (= {'?v 7} (pat-match '(a (?and (?is ?v number?) (?is ?v odd?))) '(a 7))))
+  )
+
+(deftest pat-match-or-test
+  (is (= {'?v 7} (pat-match '(a (?or (?is ?v odd?) (?is ?v zero?))) '(a 7))))
+  (is (= {'?v 0} (pat-match '(a (?or (?is ?v odd?) (?is ?v zero?))) '(a 0))))
+  (is nil? (pat-match '(a (?or (?is ?v odd?) (?is ?v zero?))) '(a 2)))
+  )
+
+(deftest pat-match-not-test
+  (is (= {'?v 7} (pat-match '(a ?v (?not ?v)) '(a 7 8))))
+  (is nil? (pat-match '(a ?v (?not ?v)) '(a 7 7)))
+  )
+
 (run-tests)

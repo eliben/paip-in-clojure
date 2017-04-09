@@ -45,9 +45,33 @@
       fail
       new-bindings)))
 
-(declare match-or match-and match-not)
-
-;;; TODO: define match-* functions from the table here (page 184)
+(defn match-and
+  "Succeed if all the patterns match the input."
+  [patterns input bindings]
+  (cond (= bindings fail) fail
+        (empty? patterns) bindings
+        :else (match-and
+                (rest patterns)
+                input
+                (pat-match (first patterns) input bindings))))
+  
+(defn match-or
+  "Succeed if any of the patterns match the input."
+  [patterns input bindings]
+  (if (empty? patterns)
+    fail
+    (let [new-bindings (pat-match (first patterns) input bindings)]
+      (if (= new-bindings fail)
+        (match-or (rest patterns) input bindings)
+        new-bindings))))
+  
+(defn match-not
+  "Succeed if none of the patterns match the input.
+   This will never bind variables."
+  [patterns input bindings]
+  (if (match-or patterns input bindings)
+    fail
+    bindings))
 
 (def single-matcher-table
   "Table mapping single matcher names to matching functions."
@@ -84,3 +108,5 @@
 
 ;(pat-match '(a ?v b) '(a c d))
 (pat-match '(a = (?is ?v number?)) '(a = 8))
+
+(pat-match '(a (?and (?is ?v number?) (?is ?v odd?))) '(a 7))
