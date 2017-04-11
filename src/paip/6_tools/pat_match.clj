@@ -1,6 +1,7 @@
 ;;; TODO: add tests in a separate file? same as for EOPL utils
 
-(ns paip.6-tools.pat-match)
+(ns paip.6-tools.pat-match
+  (:use paip.utils))
 
 ;;; TODO: Implement segment matching too
 
@@ -87,7 +88,9 @@
    at position start. If pat1 is non-constant, then just return start."
   [pat1 input start]
   (cond (and (not (list? pat1))
-             (not (variable? pat1))) ( TODO here
+             (not (variable? pat1))) (index-in-seq input pat1 start)
+        (< start (count input)) start
+        :else nil))
   
 (defn segment-match-*
   "Match the segment pattern ((?* var) . pat) against input."
@@ -102,14 +105,13 @@
            fail
            (let [b2 (pat-match pat
                                (nthrest input pos)
-                               (match-variable var
+                               (match-variable v
                                                (take pos input)
                                                bindings))]
              ;; If this match failed, try another longer one
              (if (= b2 fail)
-               (segment-match pattern input bindings (+ pos 1))
+               (segment-match-* pattern input bindings (+ pos 1))
                b2))))))))
-  
 
 (def segment-matcher-table
   "Table mapping segment matcher names to matching functions."
@@ -139,7 +141,7 @@
 (defn segment-matcher
   "Call the right function for this kind of segment pattern."
   [pattern input bindings]
-  ((get segment-matcher-table (first (first pattern)) pattern input bindings)))
+  ((get segment-matcher-table (first (first pattern))) pattern input bindings))
 
 (defn pat-match
   ([pattern input] (pat-match pattern input no-bindings))
@@ -159,6 +161,7 @@
          :else fail)))
 
 ;(pat-match '(a ?v b) '(a c d))
-(pat-match '(a = (?is ?v number?)) '(a = 8))
+;(pat-match '(a = (?is ?v number?)) '(a = 8))
+;(pat-match '(a (?and (?is ?v number?) (?is ?v odd?))) '(a 8))
 
-(pat-match '(a (?and (?is ?v number?) (?is ?v odd?))) '(a 8))
+(pat-match '(a (?* ?x) d) '(a b c d))
