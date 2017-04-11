@@ -1,3 +1,5 @@
+;;; Foundational utility functions useful for translating for Common Lisp, but
+;;; that don't have trivial translations in Clojure.
 (ns paip.utils)
 
 (defn index-in-seq

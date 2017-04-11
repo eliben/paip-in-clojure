@@ -93,13 +93,18 @@
         :else nil))
   
 (defn segment-match-*
-  "Match the segment pattern ((?* var) . pat) against input."
+  "Match the segment pattern ((?* ?var) . pat) against input."
   ([pattern input bindings] (segment-match-* pattern input bindings 0))
   ([pattern input bindings start]
    (let [v (second (first pattern))
          pat (rest pattern)]
      (if (nil? pat)
+       ;; If there's no more pat to match, this is a simple variable match of
+       ;; ?var on the whole input.
        (match-variable v input bindings)
+       ;; Otherwise, find the first position in the input where pat could match.
+       ;; Try to match our segment until there pat from there. If this fails,
+       ;; rerun with start+1 to try matching at the next position.
        (let [pos (first-match-pos (first pat) input start)]
          (if (nil? pos)
            fail
@@ -165,3 +170,5 @@
 ;(pat-match '(a (?and (?is ?v number?) (?is ?v odd?))) '(a 8))
 
 (pat-match '(a (?* ?x) d) '(a b c d))
+(pat-match '(a (?* ?x) (?* y) d) '(a b c d))
+(pat-match '(a (?* ?x) (?* ?y) ?x ?y) '(a b c d (b c) d))

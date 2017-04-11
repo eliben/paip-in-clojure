@@ -39,4 +39,14 @@
   (is (nil? (pat-match '(a ?v (?not ?v)) '(a 7 7))))
   )
 
+(deftest pat-match-*-test
+  (is (= {'?v '(b c)} (pat-match '(a (?* ?v) d) '(a b c d))))
+  (is (= {'?v '(b)} (pat-match '(a (?* ?v) d) '(a b d))))
+  (is (= {'?v '()} (pat-match '(a (?* ?v) d) '(a d))))
+
+  (is (= {'?x '(), '?y '(b c)} (pat-match '(a (?* ?x) (?* ?y) d) '(a b c d))))
+  (is (= {'?x '(b c), '?y '(d)} (pat-match '(a (?* ?x) (?* ?y) ?x ?y)
+                                           '(a b c d (b c) (d)))))
+  )
+
 (run-tests)
