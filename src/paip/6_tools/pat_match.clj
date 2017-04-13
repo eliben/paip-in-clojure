@@ -1,8 +1,6 @@
 (ns paip.6-tools.pat-match
   (:use paip.utils))
 
-;;; TODO: Implement segment matching too
-
 (def fail
   "Denotes a failure in matching"
   nil)
@@ -81,10 +79,6 @@
    '?and match-and
    '?not match-not})
 
-(declare segment-match-* segment-match-+ segment-match-? match-if)
-
-;;; TODO: implement the other segment matchers
-
 (defn first-match-pos
   "Find the first position that pat1 could possibly match input, starting
    at position start. If pat1 is non-constant, then just return start,
@@ -143,8 +137,7 @@
   "Table mapping segment matcher names to matching functions."
   {'?* segment-match-*
    '?+ segment-match-+
-   '?? segment-match-?
-   '?if match-if})
+   '?? segment-match-?})
 
 (defn single-pattern?
   "Is this a single-matching pattern?"

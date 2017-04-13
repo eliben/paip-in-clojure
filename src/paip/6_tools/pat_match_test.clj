@@ -51,7 +51,6 @@
   (is (= {'?x '(), '?y '(b c)} (pat-match '(a (?* ?x) (?* ?y) d) '(a b c d))))
   (is (= {'?x '(b c), '?y '(d)} (pat-match '(a (?* ?x) (?* ?y) ?x ?y)
                                            '(a b c d (b c) (d)))))
-
   )
 
 (deftest pat-match-+-test
@@ -65,8 +64,11 @@
 (deftest pat-match-?-test
   (is (= {'?v 'k} (pat-match '((?? ?v) d) '(k d) {})))
   (is (= {} (pat-match '((?? ?v) d) '(d) {})))
+
+  (is (nil? (pat-match '(g (?? ?v) d) '(d) {})))
+  (is (= {} (pat-match '(g (?? ?v) d) '(g d) {})))
+  (is (= {'?v 'i} (pat-match '(g (?? ?v) d) '(g i d) {})))
+  (is (nil? (pat-match '(g (?? ?v) d) '(g i x d) {})))
   )
-
-
 
 (run-tests)
