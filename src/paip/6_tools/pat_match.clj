@@ -1,5 +1,3 @@
-;;; TODO: add tests in a separate file? same as for EOPL utils
-
 (ns paip.6-tools.pat-match
   (:use paip.utils))
 
@@ -83,12 +81,18 @@
 
 (declare segment-match-* segment-match-+ segment-match-? match-if)
 
+;;; TODO: implement the other segment matchers
+
 (defn first-match-pos
   "Find the first position that pat1 could possibly match input, starting
-   at position start. If pat1 is non-constant, then just return start."
+   at position start. If pat1 is non-constant, then just return start,
+   conservatively assuming it could match."
   [pat1 input start]
   (cond (and (not (list? pat1))
-             (not (variable? pat1))) (index-in-seq input pat1 start)
+             (not (variable? pat1))) (let [idx (index-in-seq input pat1 start)]
+                                       (if (< idx 0)
+                                         nil
+                                         idx))
         (< start (count input)) start
         :else nil))
   
@@ -171,4 +175,6 @@
 
 (pat-match '(a (?* ?x) d) '(a b c d))
 (pat-match '(a (?* ?x) (?* y) d) '(a b c d))
-(pat-match '(a (?* ?x) (?* ?y) ?x ?y) '(a b c d (b c) d))
+(pat-match '(a (?* ?x) (?* ?y) ?x ?y) '(a b c d (b c) (d)))
+
+(pat-match '(a (?* ?v) d ?v) '(a b c d (b c)))

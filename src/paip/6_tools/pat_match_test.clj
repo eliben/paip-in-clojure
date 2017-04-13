@@ -44,9 +44,14 @@
   (is (= {'?v '(b)} (pat-match '(a (?* ?v) d) '(a b d))))
   (is (= {'?v '()} (pat-match '(a (?* ?v) d) '(a d))))
 
+  (is (= {'?v '(b c)} (pat-match '(a (?* ?v) d ?v) '(a b c d (b c)))))
+  (is (nil? (pat-match '(a (?* ?v) b c d ?v) '(a b c d (b k)))))
+  (is (= {'?v '()} (pat-match '(a (?* ?v) b c d ?v) '(a b c d ()))))
+
   (is (= {'?x '(), '?y '(b c)} (pat-match '(a (?* ?x) (?* ?y) d) '(a b c d))))
   (is (= {'?x '(b c), '?y '(d)} (pat-match '(a (?* ?x) (?* ?y) ?x ?y)
                                            '(a b c d (b c) (d)))))
+
   )
 
 (run-tests)
