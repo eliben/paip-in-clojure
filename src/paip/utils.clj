@@ -12,3 +12,13 @@
        (+ start idx)
        -1)))
   ([seq item] (.indexOf seq item)))
+
+(defn print-and-return
+  "Prints and returns its parameter. Useful for interjection inside
+  expressions."
+  ([id param]
+   (prn id param)
+   param)
+  ([param]
+   (prn param)
+   param))

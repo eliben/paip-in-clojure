@@ -62,4 +62,11 @@
   (is (= {'?v '(t), '?u '(p a)} (pat-match '(a (?+ ?v) (?+ ?u) d) '(a t p a d))))
   )
 
+(deftest pat-match-?-test
+  (is (= {'?v 'k} (pat-match '((?? ?v) d) '(k d) {})))
+  (is (= {} (pat-match '((?? ?v) d) '(d) {})))
+  )
+
+
+
 (run-tests)

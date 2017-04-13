@@ -33,6 +33,8 @@
           (= input b) bindings
           :else fail)))
 
+(declare pat-match)
+
 (defn match-is
   "Suceed and bind var if the input satisfied pred.
   var-and-pred is the list (var pred)."
@@ -129,6 +131,14 @@
   [pattern input bindings]
   (segment-match-* pattern input bindings 1))
 
+(defn segment-match-?
+  "Match ?? -- zero or one elements of input."
+  [pattern input bindings]
+  (let [v (second (first pattern))
+        pat (rest pattern)]
+    (or (pat-match (conj pat v) input bindings)
+        (pat-match pat input bindings))))
+
 (def segment-matcher-table
   "Table mapping segment matcher names to matching functions."
   {'?* segment-match-*
@@ -180,10 +190,11 @@
 ;(pat-match '(a = (?is ?v number?)) '(a = 8))
 ;(pat-match '(a (?and (?is ?v number?) (?is ?v odd?))) '(a 8))
 
-(pat-match '(a (?* ?x) d) '(a b c d))
-(pat-match '(a (?* ?x) (?* y) d) '(a b c d))
-(pat-match '(a (?* ?x) (?* ?y) ?x ?y) '(a b c d (b c) (d)))
+;(pat-match '(a (?* ?x) d) '(a b c d))
+;(pat-match '(a (?* ?x) (?* y) d) '(a b c d))
+;(pat-match '(a (?* ?x) (?* ?y) ?x ?y) '(a b c d (b c) (d)))
 
-(pat-match '(a (?+ ?v) d ?v) '(a b c d (b c)))
+;(pat-match '(a (?+ ?v) d ?v) '(a b c d (b c)))
 
-(pat-match '(a (?+ ?v) d) '(a d))
+(pat-match '(a (?? ?v) d) '(a d))
+(pat-match '(?v d) '(k d) {})
