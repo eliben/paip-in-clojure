@@ -97,7 +97,9 @@
         :else nil))
   
 (defn segment-match-*
-  "Match the segment pattern ((?* ?var) . pat) against input."
+  "Match the segment pattern ((?* ?var) . pat) against input. The optional start
+  parameter specifices where to start matching (index in input) the pattern
+  after the current ?* match."
   ([pattern input bindings] (segment-match-* pattern input bindings 0))
   ([pattern input bindings start]
    (let [v (second (first pattern))
@@ -121,6 +123,11 @@
              (if (= b2 fail)
                (segment-match-* pattern input bindings (+ pos 1))
                b2))))))))
+
+(defn segment-match-+
+  "Match ?+ -- one or more elements of input."
+  [pattern input bindings]
+  (segment-match-* pattern input bindings 1))
 
 (def segment-matcher-table
   "Table mapping segment matcher names to matching functions."
@@ -177,4 +184,6 @@
 (pat-match '(a (?* ?x) (?* y) d) '(a b c d))
 (pat-match '(a (?* ?x) (?* ?y) ?x ?y) '(a b c d (b c) (d)))
 
-(pat-match '(a (?* ?v) d ?v) '(a b c d (b c)))
+(pat-match '(a (?+ ?v) d ?v) '(a b c d (b c)))
+
+(pat-match '(a (?+ ?v) d) '(a d))

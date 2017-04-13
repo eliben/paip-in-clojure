@@ -54,4 +54,12 @@
 
   )
 
+(deftest pat-match-+-test
+  ;; ?+ can't match empty lists
+  (is (nil? (pat-match '(a (?+ ?v) d) '(a d))))
+
+  (is (= {'?v '(t)} (pat-match '(a (?+ ?v) d) '(a t d))))
+  (is (= {'?v '(t), '?u '(p a)} (pat-match '(a (?+ ?v) (?+ ?u) d) '(a t p a d))))
+  )
+
 (run-tests)
