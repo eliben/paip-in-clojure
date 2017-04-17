@@ -1,3 +1,5 @@
+;;; Chapter 6, section 6.2: a pattern matching tool.
+
 (ns paip.6-tools.pat-match
   (:use paip.utils))
 
@@ -50,10 +52,10 @@
   (cond (= bindings fail) fail
         (empty? patterns) bindings
         :else (match-and
-                (rest patterns)
-                input
-                (pat-match (first patterns) input bindings))))
-  
+               (rest patterns)
+               input
+               (pat-match (first patterns) input bindings))))
+
 (defn match-or
   "Succeed if any of the patterns match the input."
   [patterns input bindings]
@@ -63,7 +65,7 @@
       (if (= new-bindings fail)
         (match-or (rest patterns) input bindings)
         new-bindings))))
-  
+
 (defn match-not
   "Succeed if none of the patterns match the input.
    This will never bind variables."
@@ -91,7 +93,7 @@
                                          idx))
         (< start (count input)) start
         :else nil))
-  
+
 (defn segment-match-*
   "Match the segment pattern ((?* ?var) . pat) against input. The optional start
   parameter specifices where to start matching (index in input) the pattern
@@ -178,16 +180,3 @@
                                                (first input)
                                                bindings))
          :else fail)))
-
-;(pat-match '(a ?v b) '(a c d))
-;(pat-match '(a = (?is ?v number?)) '(a = 8))
-;(pat-match '(a (?and (?is ?v number?) (?is ?v odd?))) '(a 8))
-
-;(pat-match '(a (?* ?x) d) '(a b c d))
-;(pat-match '(a (?* ?x) (?* y) d) '(a b c d))
-;(pat-match '(a (?* ?x) (?* ?y) ?x ?y) '(a b c d (b c) (d)))
-
-;(pat-match '(a (?+ ?v) d ?v) '(a b c d (b c)))
-
-(pat-match '(a (?? ?v) d) '(a d))
-(pat-match '(?v d) '(k d) {})
