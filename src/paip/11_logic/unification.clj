@@ -1,4 +1,5 @@
 (ns paip.11-logic.unification
+  (:use clojure.tools.trace)
   (:use paip.utils))
 
 (def fail
@@ -66,8 +67,10 @@
                                                       v
                                                       (get-binding x bindings)
                                                       bindings)
-        (list? x) (or (occurs-check v (first x) bindings)
+        (cons? x) (or (occurs-check v (first x) bindings)
                       (occurs-check v (rest x) bindings))
         :else false))
+
+;(trace-vars occurs-check)
 
 (unify '(?x + 1) '(2 + ?y))

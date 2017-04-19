@@ -19,4 +19,15 @@
   (is (= -1 (index-in-seq '() 10)))
   )
 
+(deftest cons?-test
+  (is (cons? '(1)))
+  (is (cons? '(1 2)))
+  (is (cons? '(1 2 3)))
+
+  (is (not (cons? [1 2 3])))
+  (is (not (cons? '())))
+  (is (not (cons? nil)))
+  (is (not (cons? 'sdf)))
+  )
+
 (run-tests)

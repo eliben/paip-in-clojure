@@ -19,6 +19,7 @@
 
 (deftest unify-occurs-fail
   (is (nil? (unify '?x '(f ?x))))
+  (is (nil? (unify '(?x ?y) '((f ?y) (f ?x)))))
   )
 
 (run-tests)

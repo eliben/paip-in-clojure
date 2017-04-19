@@ -22,3 +22,13 @@
   ([param]
    (prn param)
    param))
+
+(defn cons?
+  "Is x a 'cons cell'? Non empty lists return true, otherwise false.
+  
+  Doesn't raise an exception on non-sequence inputs.
+  See http://eli.thegreenplace.net/2016/common-lisps-consp-and-listp-in-clojure/
+  for more details."
+  [x]
+  (and (list? x) (not (empty? x))))
+  
