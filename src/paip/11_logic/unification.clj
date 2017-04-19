@@ -32,7 +32,7 @@
           (= input b) bindings
           :else fail)))
 
-(declare unify-variable occurs-check)
+(declare unify-variable occurs-check?)
 
 (defn unify
   "Unify x and y with the given bindings."
@@ -42,10 +42,10 @@
          (= x y) bindings
          (variable? x) (unify-variable x y bindings)
          (variable? y) (unify-variable y x bindings)
-         (and (list? x) (list y)) (unify
-                                   (rest x)
-                                   (rest y)
-                                   (unify (first x) (first y) bindings))
+         (and (list? x) (list? y)) (unify
+                                    (rest x)
+                                    (rest y)
+                                    (unify (first x) (first y) bindings))
          :else fail)))
 
 (defn unify-variable
@@ -56,19 +56,20 @@
                                                       v
                                                       (get-binding x bindings)
                                                       bindings)
-        (occurs-check v x bindings) fail
+        (occurs-check? v x bindings) fail
         :else (extend-bindings v x bindings)))
 
-(defn occurs-check
-  "Does var occur anywhere inside v?"
+(defn occurs-check?
+  "Does v occur anywhere inside x?"
   [v x bindings]
   (cond (= v x) true
-        (and (variable? x) (get-binding x bindings)) (occurs-check
-                                                      v
-                                                      (get-binding x bindings)
-                                                      bindings)
-        (cons? x) (or (occurs-check v (first x) bindings)
-                      (occurs-check v (rest x) bindings))
+        (and (variable? x)
+             (get-binding x bindings)) (occurs-check?
+                                        v
+                                        (get-binding x bindings)
+                                        bindings)
+        (cons? x) (or (occurs-check? v (first x) bindings)
+                      (occurs-check? v (rest x) bindings))
         :else false))
 
 ;(trace-vars occurs-check)

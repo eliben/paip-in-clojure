@@ -4,6 +4,7 @@
 
 (deftest unify-simple
   (is (= {} (unify 'a 'a)))
+  (is (= {} (unify '(?x ?y) '(?x ?y))))
   (is (nil? (unify 'a 'b)))
 
   (is (= {'?x 2} (unify '(?x + 1) '(2 + 1))))
@@ -15,6 +16,8 @@
   (is (= {'?x '?y} (unify '(?x ?x ?x) '(?y ?y ?y))))
   (is (= {'?x '?y} (unify '(?x ?y) '(?y ?x))))
   (is (= {'?x '?y, '?a '?y} (unify '(?x ?y ?a) '(?y ?x ?x))))
+
+  (is (nil? (unify '(?x aa) 'aa)))
   )
 
 (deftest unify-occurs-fail
