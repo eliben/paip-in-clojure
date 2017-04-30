@@ -84,5 +84,5 @@
                    (take beam-width sorted)))))
 
 ;; With beam-width of 2 won't be found...
-(with-verbose
-  (beam-search 1 #(= % 12) binary-tree (diff 12) 3))
+;(with-verbose
+  ;(beam-search 1 #(= % 12) binary-tree (diff 12) 3))
