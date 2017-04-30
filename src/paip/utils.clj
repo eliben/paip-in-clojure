@@ -13,16 +13,6 @@
        -1)))
   ([seq item] (.indexOf seq item)))
 
-(defn print-and-return
-  "Prints and returns its parameter. Useful for interjection inside
-  expressions."
-  ([id param]
-   (prn id param)
-   param)
-  ([param]
-   (prn param)
-   param))
-
 (defn cons?
   "Is x a 'cons cell'? Non empty lists return true, otherwise false.
   
@@ -31,4 +21,16 @@
   for more details."
   [x]
   (and (list? x) (not (empty? x))))
-  
+
+;;; printv variant that prints only when the dynamic *verbose* is true. A
+;;; convenience wrapper macro with-verbose is provided.
+(def ^:dynamic *verbose* false)
+
+(defmacro printfv
+  [fmt & args]
+  `(when *verbose*
+     (printf ~fmt ~@args)))
+
+(defmacro with-verbose
+  [& body]
+  `(binding [*verbose* true] ~@body))
