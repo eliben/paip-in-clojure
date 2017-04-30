@@ -39,8 +39,17 @@
   [x]
   (list (* 2 x) (+ 1 (* 2 x))))
 
-(with-verbose
-  (depth-first-search 1 #(= % 16) binary-tree))
+(defn finite-binary-tree
+  "Returns a successor function that generates a binary tree with n nodes."
+  [n]
+  (fn [x]
+    (filter #(<= % n) (binary-tree x))))
+
+;(with-verbose
+  ;(depth-first-search 1 #(= % 32) binary-tree))
 
 (with-verbose
-  (breadth-first-search 1 #(= % 16) binary-tree))
+  (depth-first-search 1 #(= % 22) (finite-binary-tree 15)))
+
+(with-verbose
+  (breadth-first-search 1 #(= % 32) binary-tree))
