@@ -48,8 +48,41 @@
 ;(with-verbose
   ;(depth-first-search 1 #(= % 32) binary-tree))
 
-(with-verbose
-  (depth-first-search 1 #(= % 22) (finite-binary-tree 15)))
+;(with-verbose
+  ;(depth-first-search 1 #(= % 22) (finite-binary-tree 15)))
 
+;(with-verbose
+  ;(breadth-first-search 1 #(= % 32) binary-tree))
+
+(defn diff
+  "Given n, returns a function that computes the distance of its argument from
+  n."
+  [n]
+  (fn [x] (Math/abs (- x n))))
+
+(defn sorter
+  "Returns a combiner function that sorts according to cost-fn."
+  [cost-fn]
+  (fn [new old]
+    (sort-by cost-fn (concat new old))))
+
+(defn best-first-search
+  "Search lowest cost states first until goal is reached."
+  [start goal?-fn successors cost-fn]
+  (tree-search (list start) goal?-fn successors (sorter cost-fn)))
+
+;(with-verbose
+  ;(best-first-search 1 #(= % 12) binary-tree (diff 12)))
+
+(defn beam-search
+  "Search highest scoring states first until goal is reached, but never consider
+  more than beam-width states at a time."
+  [start goal?-fn successors cost-fn beam-width]
+  (tree-search (list start) goal?-fn successors
+               (fn [old new]
+                 (let [sorted ((sorter cost-fn) old new)]
+                   (take beam-width sorted)))))
+
+;; With beam-width of 2 won't be found...
 (with-verbose
-  (breadth-first-search 1 #(= % 32) binary-tree))
+  (beam-search 1 #(= % 12) binary-tree (diff 12) 3))
