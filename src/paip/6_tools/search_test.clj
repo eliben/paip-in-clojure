@@ -1,3 +1,7 @@
+; To run these tests from the lein REPL, run:
+; => (require '[paip.6-tools.search-test] :reload-all)
+;
+; and the tests will run because of the (run-tests) invocation at the bottom.
 (ns paip.6-tools.search-test
   (:use clojure.test)
   (:use paip.6-tools.search))
