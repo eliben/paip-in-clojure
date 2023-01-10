@@ -17,12 +17,10 @@
   (is (= {'?x '?y} (unify '(?x ?y) '(?y ?x))))
   (is (= {'?x '?y, '?a '?y} (unify '(?x ?y ?a) '(?y ?x ?x))))
 
-  (is (nil? (unify '(?x aa) 'aa)))
-  )
+  (is (nil? (unify '(?x aa) 'aa))))
 
 (deftest unify-occurs-fail
   (is (nil? (unify '?x '(f ?x))))
-  (is (nil? (unify '(?x ?y) '((f ?y) (f ?x)))))
-  )
+  (is (nil? (unify '(?x ?y) '((f ?y) (f ?x))))))
 
 (run-tests)

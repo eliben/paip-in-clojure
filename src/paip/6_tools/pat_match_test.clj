@@ -15,29 +15,24 @@
   (is (= {'?v 'b} (pat-match '(?v t ?v) '(b t b))))
   (is (nil? (pat-match '(?v t ?v) '(a t b))))
 
-  (is (= {'?v '(t k)} (pat-match '(a ?v) '(a (t k)))))
-  )
+  (is (= {'?v '(t k)} (pat-match '(a ?v) '(a (t k))))))
 
 (deftest pat-match-is-test
   (is (= {'?v 8} (pat-match '(a = (?is ?v number?)) '(a = 8))))
-  (is (nil? (pat-match '(a = (?is ?v number?)) '(a = jk))))
-  )
+  (is (nil? (pat-match '(a = (?is ?v number?)) '(a = jk)))))
 
 (deftest pat-match-and-test
   (is (nil? (pat-match '(a (?and (?is ?v number?) (?is ?v odd?))) '(a 8))))
-  (is (= {'?v 7} (pat-match '(a (?and (?is ?v number?) (?is ?v odd?))) '(a 7))))
-  )
+  (is (= {'?v 7} (pat-match '(a (?and (?is ?v number?) (?is ?v odd?))) '(a 7)))))
 
 (deftest pat-match-or-test
   (is (= {'?v 7} (pat-match '(a (?or (?is ?v odd?) (?is ?v zero?))) '(a 7))))
   (is (= {'?v 0} (pat-match '(a (?or (?is ?v odd?) (?is ?v zero?))) '(a 0))))
-  (is (nil? (pat-match '(a (?or (?is ?v odd?) (?is ?v zero?))) '(a 2))))
-  )
+  (is (nil? (pat-match '(a (?or (?is ?v odd?) (?is ?v zero?))) '(a 2)))))
 
 (deftest pat-match-not-test
   (is (= {'?v 7} (pat-match '(a ?v (?not ?v)) '(a 7 8))))
-  (is (nil? (pat-match '(a ?v (?not ?v)) '(a 7 7))))
-  )
+  (is (nil? (pat-match '(a ?v (?not ?v)) '(a 7 7)))))
 
 (deftest pat-match-*-test
   (is (= {'?v '(b c)} (pat-match '(a (?* ?v) d) '(a b c d))))
@@ -50,16 +45,14 @@
 
   (is (= {'?x '(), '?y '(b c)} (pat-match '(a (?* ?x) (?* ?y) d) '(a b c d))))
   (is (= {'?x '(b c), '?y '(d)} (pat-match '(a (?* ?x) (?* ?y) ?x ?y)
-                                           '(a b c d (b c) (d)))))
-  )
+                                           '(a b c d (b c) (d))))))
 
 (deftest pat-match-+-test
   ;; ?+ can't match empty lists
   (is (nil? (pat-match '(a (?+ ?v) d) '(a d))))
 
   (is (= {'?v '(t)} (pat-match '(a (?+ ?v) d) '(a t d))))
-  (is (= {'?v '(t), '?u '(p a)} (pat-match '(a (?+ ?v) (?+ ?u) d) '(a t p a d))))
-  )
+  (is (= {'?v '(t), '?u '(p a)} (pat-match '(a (?+ ?v) (?+ ?u) d) '(a t p a d)))))
 
 (deftest pat-match-?-test
   (is (= {'?v 'k} (pat-match '((?? ?v) d) '(k d) {})))
@@ -68,7 +61,6 @@
   (is (nil? (pat-match '(g (?? ?v) d) '(d) {})))
   (is (= {} (pat-match '(g (?? ?v) d) '(g d) {})))
   (is (= {'?v 'i} (pat-match '(g (?? ?v) d) '(g i d) {})))
-  (is (nil? (pat-match '(g (?? ?v) d) '(g i x d) {})))
-  )
+  (is (nil? (pat-match '(g (?? ?v) d) '(g i x d) {}))))
 
 (run-tests)

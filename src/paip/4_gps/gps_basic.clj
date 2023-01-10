@@ -34,8 +34,8 @@
     (println "Executing " (:action op))
     ;; Do the update in a single swap!
     (swap! *state* #(clojure.set/union
-                      (clojure.set/difference % (:del-set op))
-                      (:add-set op)))
+                     (clojure.set/difference % (:del-set op))
+                     (:add-set op)))
     true))
 
 (defn achieve
@@ -43,16 +43,16 @@
   [goal]
   (or (contains? @*state* goal)
       (some apply-op (filter #(appropriate? goal %) *ops*))))
-    
+
 (defn GPS
   "GPS: achieve all goals using ops, from the starting state 'state'."
   [state goals ops]
     ;; Set a dynamic binding for *ops* and *state* while the solution is
     ;; executing.
-    (binding [*ops* ops
-              *state* state]
-      (when (every? achieve goals)
-        'solved)))
+  (binding [*ops* ops
+            *state* state]
+    (when (every? achieve goals)
+      'solved)))
 
 ;;; Data for the 'drive child to school' problem. State entities and actions are
 ;;; symbols.
@@ -80,15 +80,15 @@
                   :del-set #{'have-money}})))
 
 (GPS
-  (atom #{'son-at-home 'car-needs-battery 'have-money 'have-phone-book})
-  '(son-at-school) school-ops)
+ (atom #{'son-at-home 'car-needs-battery 'have-money 'have-phone-book})
+ '(son-at-school) school-ops)
 
 (GPS
-  (atom #{'son-at-home 'car-needs-battery 'have-money})
-  '(son-at-school) school-ops)
+ (atom #{'son-at-home 'car-needs-battery 'have-money})
+ '(son-at-school) school-ops)
 
 (GPS
-  (atom #{'son-at-home 'car-works})
-  '(son-at-school) school-ops)
+ (atom #{'son-at-home 'car-works})
+ '(son-at-school) school-ops)
 
 ;(clojure.pprint/pprint school-ops)

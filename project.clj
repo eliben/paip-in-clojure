@@ -7,4 +7,5 @@
                  [org.clojure/tools.trace "0.7.9"]]
   :main ^:skip-aot paip.core
   :target-path "target/%s"
+  :plugins [[lein-cljfmt "0.9.0"]]
   :profiles {:uberjar {:aot :all}})

@@ -16,8 +16,7 @@
   (is (= 1 (index-in-seq [10 20 30 20] 20)))
   (is (= 3 (index-in-seq [10 20 30 20] 20 2)))
 
-  (is (= -1 (index-in-seq '() 10)))
-  )
+  (is (= -1 (index-in-seq '() 10))))
 
 (deftest cons?-test
   (is (cons? '(1)))
@@ -27,7 +26,6 @@
   (is (not (cons? [1 2 3])))
   (is (not (cons? '())))
   (is (not (cons? nil)))
-  (is (not (cons? 'sdf)))
-  )
+  (is (not (cons? 'sdf))))
 
 (run-tests)

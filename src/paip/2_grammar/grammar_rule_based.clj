@@ -25,7 +25,7 @@
 (defn rewrites
   "Return a list of the possible rewrites for this category."
   [category]
-    (get grammar category))
+  (get grammar category))
 
 (defn generate
   "Generate a random sentence or phrase."
@@ -41,11 +41,11 @@
     ;; even when not necessary. In the book, setf is used on a let binding but
     ;; this goes against the Clojure way. We could define a cond-let macro
     ;; for Clojure too.
-    (if-let [prewrites (rewrites phrase)]
-      (generate (rand-nth prewrites))
-      (if (list? phrase)
-        (mapcat generate phrase)
-        (list phrase))))
+  (if-let [prewrites (rewrites phrase)]
+    (generate (rand-nth prewrites))
+    (if (list? phrase)
+      (mapcat generate phrase)
+      (list phrase))))
 
 ;;;---- To enable tracing, uncomment the following two lines
 ;(use 'clojure.tools.trace)
@@ -60,7 +60,7 @@
   [phrase]
   (cond (list? phrase) (map generate-tree phrase)
         (rewrites phrase)
-          (cons phrase (generate-tree (rand-nth (rewrites phrase))))
+        (cons phrase (generate-tree (rand-nth (rewrites phrase))))
         :else (list phrase)))
 
 ;(generate-tree 'sentence)
@@ -70,9 +70,9 @@
   E.g. (combine-all '((a) (b)) '((1) (2)))
   -> ((a 1) (b 1) (a 2) (b 2))"
   [xlist ylist]
-    (mapcat (fn [y]
-              (map #(concat % y) xlist))
-            ylist))
+  (mapcat (fn [y]
+            (map #(concat % y) xlist))
+          ylist))
 
 (defn generate-all
   "Generate a list of all possible expansions of this phrase."
