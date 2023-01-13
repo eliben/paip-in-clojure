@@ -3,16 +3,13 @@
 (ns paip.6-tools.search
   (:use paip.utils))
 
-(def fail
-  "Denotes a failure in searching."
-  nil)
-
 (defn tree-search
   "Finds a state that satisfies goal?-fn; Starts with states, and searches
-  according to successors and combiner."
+  according to successors and combiner. If successful, returns the state;
+  otherwise returns nil."
   [states goal?-fn successors combiner]
   (printfv ";; Search: %s%n" (pr-str states))
-  (cond (empty? states) fail
+  (cond (empty? states) nil
         (goal?-fn (first states)) (first states)
         :else (tree-search (combiner (successors (first states))
                                      (rest states))
